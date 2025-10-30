@@ -326,7 +326,7 @@ MIT License - See LICENSE file
 ## 📧 Contact
 
 [Paiman Nejrabi] - [paiman.nejrabi2000@gmail.com]
-Project: [https://github.com/yourusername/codemuse](https://github.com/yourusername/codemuse)
+Project: [https://github.com/PNejr10/Code-Muse](https://github.com/PNejr10/Code-Muse)
 
 ---
 
