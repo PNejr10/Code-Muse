@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeMuse</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 550px;
+      min-height: 600px;
+      font-family: 'Courier New', 'SF Mono', Monaco, 'Cascadia Code', monospace;
+      background: #0d1117;
+      color: #c9d1d9;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      min-height: 600px;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #238636 0%, #1f6feb 100%);
+      padding: 20px;
+      text-align: center;
+      border-bottom: 2px solid #30363d;
+    }
+
+    .logo {
+      font-size: 40px;
+      margin-bottom: 8px;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 4px;
+    }
+
+    .header p {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.9);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    .content {
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .code-input-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #8b949e;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .code-textarea {
+      width: 100%;
+      min-height: 150px;
+      padding: 12px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      color: #c9d1d9;
+      font-size: 13px;
+      font-family: 'Courier New', monospace;
+      resize: vertical;
+      transition: border-color 0.2s;
+    }
+
+    .code-textarea:focus {
+      outline: none;
+      border-color: #1f6feb;
+      box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.1);
+    }
+
+    .code-textarea::placeholder {
+      color: #6e7681;
+    }
+
+    .mode-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #30363d;
+      padding-bottom: 0;
+    }
+
+    .mode-tab {
+      padding: 10px 16px;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: #8b949e;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .mode-tab:hover {
+      color: #c9d1d9;
+      border-bottom-color: #30363d;
+    }
+
+    .mode-tab.active {
+      color: #58a6ff;
+      border-bottom-color: #1f6feb;
+    }
+
+    .ask-btn {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      background: linear-gradient(135deg, #238636 0%, #1f6feb 100%);
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .ask-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(31, 111, 235, 0.3);
+    }
+
+    .ask-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .language-selector {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .lang-btn {
+      padding: 6px 12px;
+      background: #21262d;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      color: #8b949e;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .lang-btn:hover {
+      border-color: #1f6feb;
+      color: #58a6ff;
+    }
+
+    .lang-btn.active {
+      background: #1f6feb;
+      border-color: #1f6feb;
+      color: white;
+    }
+
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .action-btn {
+      padding: 14px 12px;
+      background: #21262d;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      color: #c9d1d9;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .action-btn:hover:not(:disabled) {
+      background: #30363d;
+      border-color: #1f6feb;
+      transform: translateY(-1px);
+    }
+
+    .action-btn:active {
+      transform: translateY(0);
+    }
+
+    .action-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .action-btn .icon {
+      font-size: 16px;
+    }
+
+    .loading {
+      display: none;
+      padding: 16px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      text-align: center;
+    }
+
+    .loading.active {
+      display: block;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #30363d;
+      border-top: 2px solid #1f6feb;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .output-section {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .output-section.active {
+      display: flex;
+    }
+
+    .output-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #30363d;
+    }
+
+    .output-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      padding: 6px 10px;
+      background: #21262d;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      color: #8b949e;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .icon-btn:hover {
+      background: #30363d;
+      color: #58a6ff;
+    }
+
+    .icon-btn.success {
+      background: #238636;
+      border-color: #238636;
+      color: white;
+    }
+
+    #output {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 16px;
+      min-height: 200px;
+      max-height: 400px;
+      overflow-y: auto;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #c9d1d9;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    #output::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    #output::-webkit-scrollbar-track {
+      background: #0d1117;
+    }
+
+    #output::-webkit-scrollbar-thumb {
+      background: #30363d;
+      border-radius: 4px;
+    }
+
+    #output code {
+      background: #0d1117;
+      padding: 2px 6px;
+      border-radius: 3px;
+      color: #79c0ff;
+      font-family: inherit;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      padding: 12px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      margin-top: 8px;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1f6feb;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 4px;
+    }
+
+    .footer {
+      padding: 12px 20px;
+      text-align: center;
+      font-size: 10px;
+      color: #6e7681;
+      border-top: 1px solid #30363d;
+      background: #0d1117;
+    }
+
+    .privacy-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      background: #238636;
+      color: white;
+      border-radius: 12px;
+      font-size: 10px;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">🧰</div>
+      <h1>CodeMuse</h1>
+      <p>Your Offline AI Code Mentor</p>
+    </div>
+
+    <div class="content">
+      <div class="code-input-section">
+        <div class="mode-tabs">
+          <button class="mode-tab active" id="codeTab">💻 Code Analysis</button>
+          <button class="mode-tab" id="chatTab">💬 Ask AI</button>
+        </div>
+        
+        <!-- Code Mode -->
+        <div id="codeModeSection">
+          <label>
+            <span>💻</span>
+            Your Code
+          </label>
+          <textarea 
+            id="codeInput" 
+            class="code-textarea"
+            placeholder="Paste your code here or select code on any webpage...
+
+function fibonacci(n) {
+  if (n <= 1) return n;
+  return fibonacci(n - 1) + fibonacci(n - 2);
+}"
+          ></textarea>
+        </div>
+        
+        <!-- Chat Mode -->
+        <div id="chatModeSection" style="display: none;">
+          <label>
+            <span>💬</span>
+            Ask a Question
+          </label>
+          <textarea 
+            id="chatInput" 
+            class="code-textarea"
+            style="min-height: 100px;"
+            placeholder="Ask me anything about programming...
+
+Examples:
+• What's the difference between let and const?
+• How do I reverse a string in Python?
+• Explain async/await in JavaScript
+• What are the SOLID principles?
+• How does garbage collection work?"
+          ></textarea>
+          <button class="ask-btn" id="askBtn">
+            <span>🤖</span>
+            <span>Ask AI</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="code-input-section">
+        <label>
+          <span>🏷️</span>
+          Language (optional)
+        </label>
+        <div class="language-selector">
+          <button class="lang-btn" data-lang="javascript">JavaScript</button>
+          <button class="lang-btn" data-lang="python">Python</button>
+          <button class="lang-btn" data-lang="java">Java</button>
+          <button class="lang-btn" data-lang="cpp">C++</button>
+          <button class="lang-btn" data-lang="go">Go</button>
+          <button class="lang-btn" data-lang="rust">Rust</button>
+          <button class="lang-btn active" data-lang="auto">Auto-detect</button>
+        </div>
+      </div>
+
+      <div class="action-grid">
+        <button class="action-btn" id="explainBtn" title="Get detailed code explanation">
+          <span class="icon">🧠</span>
+          <span>Explain</span>
+        </button>
+        <button class="action-btn" id="refactorBtn" title="Improve code quality and structure">
+          <span class="icon">✨</span>
+          <span>Refactor</span>
+        </button>
+        <button class="action-btn" id="reviewBtn" title="Find bugs and get improvement suggestions">
+          <span class="icon">🔍</span>
+          <span>Review</span>
+        </button>
+        <button class="action-btn" id="commentsBtn" title="Add helpful comments to code">
+          <span class="icon">📝</span>
+          <span>Add Comments</span>
+        </button>
+      </div>
+
+      <div class="loading" id="loading">
+        <span class="spinner"></span>
+        <span id="loadingText">Processing code...</span>
+      </div>
+
+      <div class="output-section" id="outputSection">
+        <div class="output-header">
+          <span class="output-title" id="outputTitle">Result</span>
+          <div class="action-buttons">
+            <button class="icon-btn" id="copyBtn">📋 Copy</button>
+            <button class="icon-btn" id="insertBtn">⬅️ Insert</button>
+          </div>
+        </div>
+        <div id="output"></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="privacy-badge">
+        🔒 100% Offline • Zero Data Sent to Cloud
+      </div>
+      <div style="margin-top: 8px;">
+        Powered by Chrome Built-in AI • Gemini Nano
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

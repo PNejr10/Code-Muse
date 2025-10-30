@@ -1,0 +1,58 @@
+{
+  "manifest_version": 3,
+  "name": "CodeMuse - AI Code Assistant",
+  "version": "1.0.0",
+  "description": "Your offline AI mentor - explain, refactor, and review code without sending a single line to the cloud. Powered by Chrome's built-in AI.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "https://github.com/*",
+    "https://vscode.dev/*",
+    "https://replit.com/*",
+    "https://codepen.io/*",
+    "<all_urls>"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content.css"]
+    }
+  ],
+  "commands": {
+    "explain-code": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+E",
+        "mac": "Command+Shift+E"
+      },
+      "description": "Explain selected code"
+    },
+    "refactor-code": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+R",
+        "mac": "Command+Shift+R"
+      },
+      "description": "Refactor selected code"
+    }
+  }
+}
