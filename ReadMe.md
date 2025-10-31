@@ -94,7 +94,7 @@ CodeMuse demonstrates advanced use of the Prompt API across multiple developer w
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/codemuse.git
+git clone https://github.com/PNejr10/Code-Muse
 cd codemuse
 
 # Load in Chrome
@@ -106,29 +106,19 @@ cd codemuse
 
 ## 📖 How to Use
 
-### Method 1: Upload a File
-1. Click CodeMuse extension icon
-2. **Drag & drop a code file** or click to browse
-3. File content automatically loads
-4. Language auto-detected from extension
-5. Choose action (Explain, Refactor, Review, or Comments)
-6. Get instant results!
 
-### Method 2: From Any Webpage
+### Method 1: From Any Webpage
 1. Select code on GitHub, Stack Overflow, documentation, etc.
 2. Right-click → CodeMuse → Choose action
 3. Get instant results!
 
-### Method 3: Paste Code
+### Method 2: Paste Code
 1. Click CodeMuse extension icon
 2. Paste your code into the textarea
 3. Select language (or use auto-detect)
 4. Choose action
 5. View results and copy/insert back
 
-### Method 4: Keyboard Shortcuts
-- **Ctrl/Cmd + Shift + E** - Explain selected code
-- **Ctrl/Cmd + Shift + R** - Refactor selected code
 
 ## 🎯 Perfect For
 
@@ -160,9 +150,6 @@ cd codemuse
 - **Documentation sites**
 - **Any webpage with code!**
 
-## 🎬 Demo Video
-
-[Link to demo video - coming soon]
 
 ## 📊 Technical Architecture
 
@@ -204,7 +191,7 @@ codemuse/
 - Different output formats (code vs. text)
 - Optimized for specific use cases
 
-## 🏆 Why CodeMuse Wins
+## Why CodeMuse
 
 ### Problem-Solution Fit
 - **Real Problem**: 67% of developers concerned about code privacy (Stack Overflow Survey)
@@ -276,29 +263,27 @@ Potential additions:
 
 ## 🧪 Testing Instructions
 
-### For Judges
 
-1. **Quick Test** (2 minutes)
+1. **Quick Test** 
    - Go to any GitHub repository
    - Select a function
    - Right-click → CodeMuse → Explain
    - See instant, detailed explanation
 
-2. **Refactoring Test** (3 minutes)
+2. **Refactoring Test** 
    - Copy messy code snippet
    - Open CodeMuse
    - Click "Refactor"
    - Compare original vs improved
 
-3. **Review Test** (3 minutes)
+3. **Review Test** 
    - Paste code with intentional bugs
    - Click "Review"
    - Verify bugs are identified
-
-4. **Privacy Test**
-   - Open Network tab in DevTools
-   - Use any CodeMuse feature
-   - Verify ZERO external requests
+4. **AskAI Test** 
+   - Switch to AskAI tab
+   - Ask a technical question
+   - Verify the output is correct
 
 ## 💻 Development
 
